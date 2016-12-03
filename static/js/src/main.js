@@ -6,12 +6,12 @@
  *   data, updates components. When the user submits their work this class gets the workers
  *   annotations and other data and submits to the backend
  * Dependencies:
- *   AnnotationStages (src/annotation_stages.js), PlayBar & WorkflowBtns (src/components.js), 
+ *   AnnotationStages (src/annotation_stages.js), PlayBar & WorkflowBtns (src/components.js),
  *   HiddenImg (src/hidden_image.js), colormap (colormap/colormap.min.js) , Wavesurfer (lib/wavesurfer.min.js)
  * Globals variable from other files:
  *   colormap.min.js:
  *       magma // color scheme array that maps 0 - 255 to rgb values
- *    
+ *
  */
 function Annotator() {
     this.wavesurfer;
@@ -21,7 +21,7 @@ function Annotator() {
     this.currentTask;
     this.taskStartTime;
     this.hiddenImage;
-    // Boolean, true if currently sending http post request 
+    // Boolean, true if currently sending http post request
     this.sendingResponse = false;
 
     // Create color map for spectrogram
@@ -52,7 +52,7 @@ function Annotator() {
         container: '.labels'
     });
 
-    // Create hiddenImage, an image that is slowly revealed to a user as they annotate 
+    // Create hiddenImage, an image that is slowly revealed to a user as they annotate
     // (only for this.currentTask.feedback === 'hiddenImage')
     this.hiddenImage = new HiddenImg('.hidden_img', 100);
     this.hiddenImage.create();
@@ -61,7 +61,7 @@ function Annotator() {
     this.playBar = new PlayBar(this.wavesurfer);
     this.playBar.create();
 
-    // Create the annotation stages that appear below the wavesurfer. The stages contain tags 
+    // Create the annotation stages that appear below the wavesurfer. The stages contain tags
     // the users use to label a region in the audio clip
     this.stages = new AnnotationStages(this.wavesurfer, this.hiddenImage);
     this.stages.create();
@@ -83,12 +83,12 @@ Annotator.prototype = {
             my.wavesurfer.seekTo(progress);
         };
 
-        // Update vertical progress bar to the currentTime when the sound clip is 
+        // Update vertical progress bar to the currentTime when the sound clip is
         // finished or paused since it is only updated on audioprocess
         this.wavesurfer.on('pause', updateProgressBar);
-        this.wavesurfer.on('finish', updateProgressBar);    
+        this.wavesurfer.on('finish', updateProgressBar);
 
-        // When a new sound file is loaded into the wavesurfer update the  play bar, update the 
+        // When a new sound file is loaded into the wavesurfer update the  play bar, update the
         // annotation stages back to stage 1, update when the user started the task, update the workflow buttons.
         // Also if the user is suppose to get hidden image feedback, append that component to the page
         this.wavesurfer.on('ready', function () {
@@ -145,7 +145,7 @@ Annotator.prototype = {
 
             // Update the visualization type and the feedback type and load in the new audio clip
             my.wavesurfer.params.visualization = my.currentTask.visualization; // invisible, spectrogram, waveform
-            my.wavesurfer.params.feedback = my.currentTask.feedback; // hiddenImage, silent, notify, none 
+            my.wavesurfer.params.feedback = my.currentTask.feedback; // hiddenImage, silent, notify, none
             my.wavesurfer.load(my.currentTask.url);
         };
 
@@ -218,7 +218,7 @@ Annotator.prototype = {
         var my = this;
         $.ajax({
             type: 'POST',
-            url: $.getJSON(postUrl),
+            url: postUrl,
             contentType: 'application/json',
             data: JSON.stringify(content)
         })
